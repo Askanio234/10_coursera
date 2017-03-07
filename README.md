@@ -1,7 +1,33 @@
-# Coursera Dump
+# Популярные проекты на Гитхабе
 
-[TODO. There will be project description]
+Скрипт запрашивает у xml-фида курсеры 20 случайных курсов, затем пишет информацию о них в xlsx файл и сохраняет его с именем, которое дал ему пользователь.
 
-# Project Goals
+# Как запустить
+Перед запуском необходимо установить зависимости из requirements.txt:
+```#!bash
 
-The code is written for educational purposes. Training course for web-developers - [DEVMAN.org](https://devman.org)
+pip install -r requirements.txt
+
+```
+## Запуск на Linux:
+
+У скрипта один обязательный параметр передаваемый через консоль - filename
+
+```#!bash
+
+$ E:\Users\user\Documents\projects\10_coursera>python coursera.py infofile
+
+
+```
+Создается файл infofile.xlsx
+
+с следующими столбцами:
+
+Title | Language | Start date| Length(Weeks)  | Rating   |
+----- | -------- | --------- | -------------- | -------- |
+
+## Запуск на Windows происходит аналогично.
+
+# Цели проекта
+
+Код создан в учебных целях. В рамках учебного курса по веб-разработке - [DEVMAN.org](https://devman.org)
