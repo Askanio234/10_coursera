@@ -17,10 +17,13 @@ def get_courses_list(xml_feed):
         document_tree = etree.fromstring(request.content)
         all_courses_urls = [course.getchildren()[0].text
                         for course in document_tree]
-        random_courses_urls = random.sample(all_courses_urls, k=MAX_COURSES)
-        return random_courses_urls
+        return all_courses_urls
     else:
         print("Нет ответа от сервера")
+
+
+def choose_random_courses(all_courses, number_of_courses):
+    return random.sample(all_courses, k=number_of_courses)
 
 
 def get_course_info(course_slug):
@@ -34,19 +37,19 @@ def get_course_info(course_slug):
                                     class_="title display-3-text").text
         course_info["language"] = soup.find("div",
                                     class_="language-info").text
-        if not soup.find("div", class_="startdate") is None:
-            course_info["start_date"] = soup.find("div",
-                                            class_="startdate").text
+        startdate = soup.find("div", class_="startdate")
+        if not startdate is None:
+            course_info["start_date"] = startdate.text   
         else:
             course_info["start_date"] = default_info
-        if not soup.find_all("div", class_="week") is None:
-            course_info["num_of_weeks"] = len(soup.find_all("div",
-                                                        class_="week"))
+        course_length = soup.find_all("div", class_="week")
+        if not course_length is None:
+            course_info["num_of_weeks"] = len(course_length)
         else:
             course_info["num_of_weeks"] = default_info
-        if not soup.find("div", class_="ratings-text") is None:
-            course_info["rating"] = soup.find("div",
-                                            class_="ratings-text").text
+        course_ratings = soup.find("div", class_="ratings-text")
+        if not course_ratings is None:
+            course_info["rating"] = course_ratings.text
         else:
             course_info["rating"] = default_info
 
@@ -73,8 +76,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("filename", help="Имя файла")
     args = parser.parse_args()
-    courses_list = get_courses_list(COURSERA_XML_FEED)
-    courses_info = []
-    for course in courses_list:
-        courses_info.append(get_course_info(course))
+    courses_list = choose_random_courses(get_courses_list(COURSERA_XML_FEED),
+                                            MAX_COURSES)
+    courses_info = [get_course_info(course) for course in courses_list]
     output_courses_info_to_xlsx(args.filename, courses_info)
