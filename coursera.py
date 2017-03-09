@@ -38,20 +38,20 @@ def get_course_info(course_slug):
         course_info["language"] = soup.find("div",
                                     class_="language-info").text
         startdate = soup.find("div", class_="startdate")
-        if not startdate is None:
-            course_info["start_date"] = startdate.text   
-        else:
+        if startdate is None:
             course_info["start_date"] = default_info
+        else:
+            course_info["start_date"] = startdate.text
         course_length = soup.find_all("div", class_="week")
-        if not course_length is None:
-            course_info["num_of_weeks"] = len(course_length)
-        else:
+        if course_length is None:
             course_info["num_of_weeks"] = default_info
-        course_ratings = soup.find("div", class_="ratings-text")
-        if not course_ratings is None:
-            course_info["rating"] = course_ratings.text
         else:
+            course_info["num_of_weeks"] = len(course_length)
+        course_ratings = soup.find("div", class_="ratings-text")
+        if course_ratings is None:
             course_info["rating"] = default_info
+        else:
+            course_info["rating"] = course_ratings.text
 
         return course_info
 
