@@ -66,9 +66,9 @@ def output_courses_info_to_xlsx(filepath, courses):
     work_sheet.append(["Title", "Language", "Start date",
                         "Length(Weeks)", "Rating"])
     for course in courses:
-        work_sheet.append([course["title"], course["language"],
+        work_sheet.append((course["title"], course["language"],
                             course["start_date"], course["num_of_weeks"],
-                            course["rating"]])
+                            course["rating"]))
     work_book.save("{}.xlsx".format(filepath))
 
 
